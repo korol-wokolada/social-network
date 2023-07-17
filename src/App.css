@@ -1,7 +1,13 @@
 .App {
   text-align: center;
 }
-
+.spin-wrapper {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

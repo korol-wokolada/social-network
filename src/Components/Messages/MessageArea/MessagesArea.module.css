@@ -1,0 +1,28 @@
+.wrapper {
+  grid-area: Dialog;
+  display: grid;
+  grid-template-rows: 1fr 50px;
+  grid-template-columns: 1fr;
+
+  grid-template-areas:
+    "messageBlock"
+    "textArea";
+  justify-content: space-between;
+}
+.message {
+  font-size: large;
+  text-align: right;
+  padding-right: 10px;
+}
+.messageBlock {
+  grid-area: messageBlock;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: auto;
+}
+.textArea {
+  grid-area: textArea;
+  display: flex;
+  margin-top: 20px;
+}

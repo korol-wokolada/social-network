@@ -1,0 +1,26 @@
+.wrapper {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.usersWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.flex {
+  display: flex;
+}
+
+.active {
+  font-weight: bolder;
+}
+
+.avatarWithButton {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
