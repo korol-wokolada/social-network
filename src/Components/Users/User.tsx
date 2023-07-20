@@ -19,7 +19,7 @@ export default function User() {
     totalUsersCount,
     pageSize,
     currentPage,
-    isFetching,
+
     followingProgress,
   } = useAppSelector((state) => state.users);
 

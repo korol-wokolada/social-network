@@ -1,6 +1,7 @@
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import style from "./Message.module.css";
+import { NavLink } from "react-router-dom";
 type Props = {
   message: string;
   photo?: string;
@@ -18,7 +19,9 @@ export default function Message({ message, photo, userId, userName }: Props) {
   return (
     <>
       <div className={style.wrapper}>
-        <div>{avatar}</div>
+        <NavLink to={"/profile/" + userId}>
+          <div>{avatar}</div>
+        </NavLink>
         <p>
           {userName}: {message}
         </p>
