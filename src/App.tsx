@@ -10,34 +10,34 @@ import {
 import { Button, Layout, Menu, theme, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Profile from "./Components/Profile/Profile";
-import Messages from "./Components/Messages/Messages";
-import News from "./Components/News/News";
-import User from "./Components/Users/User";
-import Setting from "./Components/Settings/Setting";
+
 import { NavLink } from "react-router-dom";
-import LoginPage from "./Components/LoginPage/LoginPage";
-import {
-  RootState,
-  useAppDispatch,
-  useAppSelector,
-} from "./Redux-Toolkit/Redux-Toolkit-Store";
-import { authThunk } from "./Redux-Toolkit/Auth-Reducer/Auth-slice";
+
 import "./App.css";
+import LoginPage from "./pages/loginPage/LoginPage";
+
+import ProfilePage from "./pages/profilePage/ProfilePage";
+import UserPage from "./pages/usersPage/UserPage";
+import MessagesPage from "./pages/messagesPage/MessagesPage";
+import NewsPage from "./pages/newsPage/News";
+import SettingPage from "./pages/settingsPage/SettingPage";
+import { RootState, useAppDispatch, useAppSelector } from "./store/store";
+import { userAuthThunk } from "./store/authSlice/authThunk";
 
 const { Header, Sider, Content } = Layout;
 
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const { isAuth, userId } = useAppSelector((state: RootState) => state.auth);
 
-  const dispatch = useAppDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   useEffect(() => {
-    dispatch(authThunk());
+    dispatch(userAuthThunk());
   }, [dispatch]);
 
   if (!isAuth) {
@@ -112,11 +112,11 @@ const App: React.FC = () => {
                   background: colorBgContainer,
                 }}>
                 <Routes>
-                  <Route path="/Profile/:userID?" element={<Profile />} />
-                  <Route path="/Messages/*" element={<Messages />} />
-                  <Route path="/News/*" element={<News />} />
-                  <Route path="/Users/*" element={<User />} />
-                  <Route path="/Settings/*" element={<Setting />} />
+                  <Route path="/Profile/:userID?" element={<ProfilePage />} />
+                  <Route path="/Messages/*" element={<MessagesPage />} />
+                  <Route path="/News/*" element={<NewsPage />} />
+                  <Route path="/Users/*" element={<UserPage />} />
+                  <Route path="/Settings/*" element={<SettingPage />} />
                   <Route path="/Login/*" element={<LoginPage />} />
                   <Route path="*" element={<div>404 NOT FOUND</div>} />
                 </Routes>

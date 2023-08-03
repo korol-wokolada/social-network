@@ -1,11 +1,11 @@
-import { Login } from "../Redux-Toolkit/Auth-Reducer/Auth-slice";
-import { instance } from "./ApiSettings";
+import { Login } from "../store/authSlice/types";
+import { instance } from "./apiSettings";
 
-export async function me() {
+export async function checkIsUserRegistrationExistRequest() {
   return instance.get("/auth/me").then((response) => response.data);
 }
 
-export function login({
+export function userLoginRequest({
   email,
   password,
   rememberMe = false,
@@ -19,12 +19,12 @@ export function login({
   });
 }
 
-export function logout() {
+export function userLogoutRequest() {
   return instance.delete("/auth/login");
 }
 
-export async function getCaptcha() {
+export async function getCaptchaRequest() {
   const res = await instance.get(`security/get-captcha-url`);
-  console.log(res);
+
   return res.data;
 }

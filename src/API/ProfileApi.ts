@@ -1,6 +1,6 @@
-import { instance } from "./ApiSettings";
+import { instance } from "./apiSettings";
 
-export function savePhotoFile(photoFile: File) {
+export function savePhotoFileRequest(photoFile: File) {
   const formData = new FormData();
   formData.append("image", photoFile);
   return instance.put(`/profile/photo`, formData, {
@@ -10,11 +10,11 @@ export function savePhotoFile(photoFile: File) {
   });
 }
 
-export function setProfileSettings(values: number | null) {
+export function setProfileSettingsRequest(values: number | null) {
   return instance.put(`/profile/`, values);
 }
 
-export async function getUserProfileApi(userId: number) {
+export async function getUserProfileRequest(userId: number) {
   try {
     const response = await instance.get(`/profile/${userId}`);
     return response.data;
@@ -23,9 +23,9 @@ export async function getUserProfileApi(userId: number) {
   }
 }
 
-export function getStatus(userId: number) {
+export function getStatusRequest(userId: number) {
   return instance.get<string>(`/profile/status/${userId}`);
 }
-export function updateStatus(status: string) {
+export function updateStatusRequest(status: string) {
   return instance.put(`/profile/status`, { status });
 }

@@ -1,4 +1,5 @@
-import { ChatMessagesType } from "./Api";
+import { ChatMessagesType } from "../store/messagesSlice/types";
+
 type SubscriberType = (messages: ChatMessagesType[]) => void;
 
 let socket: WebSocket | null = null;
