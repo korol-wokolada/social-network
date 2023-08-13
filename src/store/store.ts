@@ -5,6 +5,7 @@ import messagesSlice from "./messagesSlice/messagesSlice";
 import profileSlice from "./profileSlice/profileSlice";
 import authSlice from "./authSlice/authSlice";
 import userSlice from "./usersSlise/userSlice";
+import { samuraiJsApi } from "../api/apiSettings";
 
 export const store = configureStore({
   reducer: {
@@ -12,8 +13,10 @@ export const store = configureStore({
     profile: profileSlice,
     auth: authSlice,
     users: userSlice,
+    [samuraiJsApi.reducerPath]: samuraiJsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(samuraiJsApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,36 +1,22 @@
 import style from "./ProfileInformation.module.css";
-import { useEffect } from "react";
 
 import Contacts from "../../../../components/contacts/Contacts";
 import { Descriptions, Spin } from "antd";
 import Status from "../profileStatus/Status";
 import ProfileAvatar from "../profileAvatar/ProfileAvatar";
 import { useLocation } from "react-router-dom";
+import { useAppSelector } from "../../../../store/store";
+
 import {
-  RootState,
-  useAppDispatch,
-  useAppSelector,
-} from "../../../../store/store";
-import {
-  getProfileInformationThunk,
-  getProfileStatusThunk,
-  saveProfilePhotoThunk,
-} from "../../../../store/profileSlice/profileThunk";
+  useGetStatusRequestQuery,
+  useGetUserProfileRequestQuery,
+  useSavePhotoFileRequestMutation,
+} from "../../../../store/profileSlice/profileServises";
 
 export default function ProfileInformation() {
-  const dispatch = useAppDispatch();
-
   let location = useLocation();
 
   const userID = location.pathname.split("/")[2];
-
-  const { profile, status, isProfileLoading, isPhotoLoading } = useAppSelector(
-    (state: RootState) => state.profile
-  );
-
-  const photo = useAppSelector(
-    (state: RootState) => state.profile.profile?.photos?.small
-  );
 
   // const { userID } = props.router.params;
   const userId = useAppSelector((state) => state.auth.userId);
@@ -41,46 +27,50 @@ export default function ProfileInformation() {
     newUserId = userId as number;
   }
 
-  useEffect(() => {
-    dispatch(getProfileInformationThunk(newUserId));
-    dispatch(getProfileStatusThunk(newUserId));
-  }, [dispatch, newUserId, photo, userID, userId]);
+  const { data, isLoading } = useGetUserProfileRequestQuery(newUserId);
 
-  const onMainPhotoSelected = (e: any) => {
+  const statusInformation = useGetStatusRequestQuery(newUserId);
+
+  const [uploadPhoto, photo] = useSavePhotoFileRequestMutation();
+
+  const onMainPhotoSelected = (e: any): void => {
     const file = e.target.files[0];
 
-    if (e.target.files.length) {
-      dispatch(saveProfilePhotoThunk(file));
-    }
+    uploadPhoto(file);
   };
 
   return (
     <>
-      {isProfileLoading ? (
+      {isLoading ? (
         <Spin />
       ) : (
         <div className={style.wrapper}>
           <ProfileAvatar
             isOwner={userId === newUserId}
-            photo={photo}
-            isPhotoLoading={isPhotoLoading}
+            photo={data?.photos.small}
+            isPhotoLoading={photo.isLoading}
             onMainPhotoSelected={onMainPhotoSelected}
           />
 
           <div>
-            <Descriptions title={profile?.fullName}>
+            <Descriptions title={data?.fullName}>
               <Descriptions.Item label="Status">
-                <Status status={status} isOwner={userId === newUserId} />
+                <Status
+                  status={statusInformation.data}
+                  isOwner={userId === newUserId}
+                />
               </Descriptions.Item>
 
               <Descriptions.Item label="About me">
-                {profile?.aboutMe}
+                {data?.aboutMe}
               </Descriptions.Item>
+
               <Descriptions.Item label="Lookin for a job">
-                {profile?.lookingForAJob ? "yes" : "no"}
+                {data?.lookingForAJob ? "yes" : "no"}
               </Descriptions.Item>
+
               <Descriptions.Item label="Contacts">
-                <Contacts contacts={profile?.contacts} />
+                <Contacts contacts={data?.contacts} />
               </Descriptions.Item>
             </Descriptions>
           </div>

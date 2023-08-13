@@ -9,7 +9,7 @@ type Props = {
   isOwner: boolean;
 };
 
-export default function ProfileAvatar(props: Props) {
+function ProfileAvatar(props: Props) {
   const { photo, isPhotoLoading, onMainPhotoSelected, isOwner } = props;
 
   const avatar = photo ? (
@@ -38,3 +38,4 @@ export default function ProfileAvatar(props: Props) {
     </div>
   );
 }
+export default ProfileAvatar;

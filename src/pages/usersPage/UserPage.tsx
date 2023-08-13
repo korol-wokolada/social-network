@@ -1,42 +1,37 @@
 import { Avatar, Button, Pagination } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useEffect } from "react";
+
 import { NavLink } from "react-router-dom";
 import style from "./users.module.css";
 
 import { useAppDispatch, useAppSelector } from "../../store/store";
 
-import {
-  followUserThunk,
-  getUsersThunk,
-  unfollowUserThunk,
-} from "../../store/usersSlise/userThunk";
-
 import { setCurrentPage } from "../../store/usersSlise/userSlice";
+import {
+  useFollowUserRequestMutation,
+  useGetUsersRequestQuery,
+  useUnFollowUserRequestMutation,
+} from "../../store/usersSlise/userServises";
+import { UsersType } from "../../store/usersSlise/types";
 
 function UserPage() {
   const dispatch = useAppDispatch();
 
-  const { users, totalUsersCount, pageSize, currentPage, followingProgress } =
-    useAppSelector((state) => state.users);
+  const { pageSize, currentPage } = useAppSelector((state) => state.users);
 
-  useEffect(() => {
-    dispatch(getUsersThunk({ currentPage, pageSize }));
-  }, [currentPage, dispatch, pageSize, followingProgress]);
+  const { data, error } = useGetUsersRequestQuery({
+    currentPage,
+    pageSize,
+  });
 
-  const follow = (userId: number) => {
-    dispatch(followUserThunk(userId));
-  };
-
-  const unfollow = (userId: number) => {
-    dispatch(unfollowUserThunk(userId));
-  };
+  const [follow, followInfomation] = useFollowUserRequestMutation();
+  const [unFollow, unFollowInformation] = useUnFollowUserRequestMutation();
 
   return (
     <div className={style.wrapper}>
       <Pagination
         defaultCurrent={1}
-        total={totalUsersCount}
+        total={data?.totalCount}
         defaultPageSize={7}
         responsive={true}
         showSizeChanger={false}
@@ -48,8 +43,8 @@ function UserPage() {
       />
 
       <div className={style.usersWrapper}>
-        {users &&
-          users.map((user) => (
+        {data?.items &&
+          data?.items.map((user: UsersType) => (
             <div key={user.id}>
               <div className={style.flex}>
                 <div className={style.avatarWithButton}>
@@ -72,16 +67,18 @@ function UserPage() {
                   {user.followed ? (
                     <Button
                       size={"small"}
-                      onClick={() => {
-                        unfollow(user.id);
+                      disabled={unFollowInformation.isLoading}
+                      onClick={async () => {
+                        await unFollow(user.id);
                       }}>
                       Unfollow
                     </Button>
                   ) : (
                     <Button
                       size={"small"}
-                      onClick={() => {
-                        follow(user.id);
+                      disabled={followInfomation.isLoading}
+                      onClick={async () => {
+                        await follow(user.id);
                       }}>
                       Follow
                     </Button>

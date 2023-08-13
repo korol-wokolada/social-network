@@ -8,6 +8,4 @@ export const initialState = {
   ] as Array<PostsData>,
   profile: null as ProfileType | null,
   status: "" as string | undefined,
-  isProfileLoading: false,
-  isPhotoLoading: false,
 };

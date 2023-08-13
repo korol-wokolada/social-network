@@ -1,25 +1,25 @@
 import { Input } from "antd";
 import { useState } from "react";
-import { useAppDispatch } from "../../../../store/store";
-import { updateProfileStatusThunk } from "../../../../store/profileSlice/profileThunk";
+
+import { useUpdateStatusRequestMutation } from "../../../../store/profileSlice/profileServises";
 
 type Props = {
   status: string | undefined;
   isOwner: boolean;
 };
 export default function Status(props: Props) {
-  const dispatch = useAppDispatch();
-
   const [isChanging, setIsChanging] = useState(false);
 
   const [userStatus, setUserStatus] = useState("");
+
+  const [setNewStatus] = useUpdateStatusRequestMutation();
 
   function changeStatus(e: React.ChangeEvent<HTMLInputElement>) {
     setUserStatus(e.target.value);
   }
 
   function offChanging() {
-    dispatch(updateProfileStatusThunk(userStatus));
+    setNewStatus({ status: userStatus });
     setIsChanging(false);
   }
 

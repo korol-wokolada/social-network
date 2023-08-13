@@ -16,28 +16,21 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProfileInformationThunk.pending, (state) => {
-        state.isProfileLoading = true;
-      })
+      .addCase(getProfileInformationThunk.pending, (state) => {})
       .addCase(
         getProfileInformationThunk.fulfilled,
         (state, action: PayloadAction<ProfileType>) => {
-          state.isProfileLoading = false;
           state.profile = action.payload;
         }
       )
-      .addCase(saveProfilePhotoThunk.pending, (state) => {
-        state.isPhotoLoading = true;
-      })
+      .addCase(saveProfilePhotoThunk.pending, (state) => {})
       .addCase(
         saveProfilePhotoThunk.fulfilled,
         (state, action: PayloadAction<PhotosType>) => {
           if (state.profile === null) {
-            state.isPhotoLoading = false;
             return;
           }
           state.profile.photos = action.payload;
-          state.isPhotoLoading = false;
         }
       );
   },
