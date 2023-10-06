@@ -1,4 +1,5 @@
 import { samuraiJsApi } from "../../api/apiSettings";
+import { IfromInput } from "../../pages/settingsPage/components/SettingProfileForm";
 
 export const profileRequests = samuraiJsApi.injectEndpoints({
   endpoints: (build) => ({
@@ -36,13 +37,28 @@ export const profileRequests = samuraiJsApi.injectEndpoints({
       invalidatesTags: ["uploadPhoto"],
     }),
 
-    // когда буду внедрять в компонент, попробовать переписать этот код через build.query
     setProfileSettingsRequest: build.mutation({
-      query: (values) => ({
-        url: `/profile/`,
-        method: "PUT",
-        body: values,
-      }),
+      query: (values: IfromInput) => {
+        const data = {
+          aboutMe: values.aboutMe,
+          lookingForAJob: values.lookingForAJob,
+          fullName: values.fullName,
+          contacts: {
+            github: values.github,
+            vk: values.vk,
+            facebook: values.facebook,
+            instagram: values.instagram,
+            twitter: values.twitter,
+          },
+          lookingForAJobDescription: values.lookingForAJobDescription,
+        };
+
+        return {
+          url: `/profile`,
+          method: "PUT",
+          body: data,
+        };
+      },
     }),
   }),
 });

@@ -1,3 +1,9 @@
+import SettingProfileForm from "./components/SettingProfileForm";
+
 export default function Setting() {
-  return <div>Setting</div>;
+  return (
+    <>
+      <SettingProfileForm />
+    </>
+  );
 }

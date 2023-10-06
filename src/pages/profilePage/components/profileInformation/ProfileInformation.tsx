@@ -68,6 +68,9 @@ export default function ProfileInformation() {
               <Descriptions.Item label="Lookin for a job">
                 {data?.lookingForAJob ? "yes" : "no"}
               </Descriptions.Item>
+              <Descriptions.Item label="Lookin for a job description">
+                {data?.lookingForAJobDescription}
+              </Descriptions.Item>
 
               <Descriptions.Item label="Contacts">
                 <Contacts contacts={data?.contacts} />
